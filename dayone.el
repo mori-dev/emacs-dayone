@@ -61,6 +61,7 @@
     (insert dayone-file-contents)
     (write-file (dayone-filename uuid))))
 
+;;;###autoload
 (defun dayone-add-note ()
   (interactive)
   (let ((uuid (dayone-uuid)))
