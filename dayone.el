@@ -25,8 +25,6 @@
 
 ;;; Code:
 
-(eval-when-compile (require 'cl))
-
 (require 'uuid)
 (require 'mustache)
 (require 'ht)
