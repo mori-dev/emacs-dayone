@@ -29,7 +29,15 @@
 (require 'mustache)
 (require 'ht)
 
-(defvar dayone-dir (concat (getenv "HOME") "/Dropbox/アプリ/Day One/Journal.dayone/entries/"))
+(defgroup dayone nil
+  "Day One"
+  :group 'applications)
+
+(defcustom dayone-dir
+  (concat (getenv "HOME") "/Dropbox/アプリ/Day One/Journal.dayone/entries/")
+  "Directory of Day One entries"
+  :type 'directory
+  :group 'dayone)
 
 (defun dayone-date ()
   (format-time-string "%Y-%m-%dT%H:%M:%SZ" (current-time)))
