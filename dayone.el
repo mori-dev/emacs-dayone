@@ -53,24 +53,6 @@
     (buffer-substring-no-properties (region-beginning) (region-end))
   (buffer-string)))
 
-(defun dayone-set-xml (uuid)
-  (let ((context (ht ("date" (dayone-date))
-                     ("uuid" uuid)
-                     ("note" (dayone-note)))))
-    (setq dayone-file-contents (mustache-render dayone-xml context))))
-
-(defun dayone-write-file (uuid)
-  (with-temp-buffer
-    (insert dayone-file-contents)
-    (write-file (dayone-filename uuid))))
-
-;;;###autoload
-(defun dayone-add-note ()
-  (interactive)
-  (let ((uuid (dayone-uuid)))
-    (dayone-set-xml uuid)
-    (dayone-write-file uuid)))
-
 (defvar dayone-xml "<?xml version='1.0' encoding='UTF-8'?>
 <!DOCTYPE plist PUBLIC '-//Apple//DTD PLIST 1.0//EN' 'http://www.apple.com/DTDs/PropertyList-1.0.dtd'>
 <plist version='1.0'>
@@ -100,6 +82,24 @@
         <string>{{ uuid }}</string>
 </dict>
 </plist>")
+
+(defun dayone-render-xml (uuid)
+  (let ((context (ht ("date" (dayone-date))
+                     ("uuid" uuid)
+                     ("note" (dayone-note)))))
+    (mustache-render dayone-xml context)))
+
+(defun dayone-write-file (uuid xml)
+  (with-temp-buffer
+    (insert xml)
+    (write-file (dayone-filename uuid))))
+
+;;;###autoload
+(defun dayone-add-note ()
+  (interactive)
+  (let* ((uuid (dayone-uuid))
+         (xml (dayone-render-xml uuid)))
+    (dayone-write-file uuid xml)))
 
 (provide 'dayone)
 
