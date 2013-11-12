@@ -30,4 +30,6 @@ GPLv3
 
 ```emacs-lisp
 (require 'dayone)
+(setq dayone-dir (concat (getenv "HOME") "/Dropbox/APP/Day One/Journal.dayone/entries/"))
+;(setq dayone-timezone "America/Sao_Paulo")
 ```
