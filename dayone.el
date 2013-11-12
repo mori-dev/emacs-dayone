@@ -23,17 +23,35 @@
 
 ;;; Commentary:
 
+;; dayone.el is a simple emacs extension for placing the new post from the Emacs to [Day One](http://dayoneapp.com). It can post the region when the concerned region is selected and M-x dayone-add-note. When the region is not selected and M-x dayone-add-note is executed, the all contents in the buffer are posted.
+;; As for dayone-add-note(), it may be convenient if you assign it to an appropriate key or add alias.
+;; For the Day One, the data is managed by either the iCloud or the Dropbox.  This emacs extension is supported for storing data of Dropbox only.
+
+;;; Setting:
+
+;; (require 'dayone)
+;; (setq dayone-dir (concat (getenv "HOME") "/Dropbox/APP/Day One/Journal.dayone/entries/"))
+;; (setq dayone-timezone "America/Sao_Paulo")
+
 ;;; Code:
 
 (require 'uuid)
 (require 'mustache)
 (require 'ht)
 
-(defvar dayone-dir (concat (getenv "HOME") "/Dropbox/アプリ/Day One/Journal.dayone/entries/"))
+(defvar dayone-dir ""
+  "It stores the path indicating the directory allocating the data of the Day One. It should be set up by your setting file.")
 
-(defvar dayone-timezone "Asia/Tokyo")
-(defvar software-agent "Day One (iOS)/1.11.4")
-(defvar dayone-os "Ubuntu")
+(defvar dayone-timezone "Asia/Tokyo"
+  "It stores the time zone value designated by the XML of the Day One note.")
+
+(defvar software-agent "Day One (iOS)/1.11.4"
+  "It stores the Software Agent value designated by the XML of the Day One note. It seems that the default value works well enough.")
+
+(defvar dayone-os "Ubuntu"
+  "It stores the OS Agent value designated by the XML of the Day One note. It seems that the default value works well enough.")
+
+(defvar dayone-file-contents "")
 
 (defun dayone-date ()
   (format-time-string "%Y-%m-%dT%H:%M:%SZ" (current-time)))
@@ -65,6 +83,7 @@
 
 ;;;###autoload
 (defun dayone-add-note ()
+  "It creates the new Day One note."
   (interactive)
   (let ((uuid (dayone-uuid)))
     (dayone-set-xml uuid)
