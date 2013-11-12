@@ -3,7 +3,7 @@
 ;; Copyright (C) 2013 by mori-dev
 
 ;; Author: mori-dev <mori.dev.asdf@gmail.com>
-;; Keywords: dayone
+;; Keywords: Day One, tools, convenience
 ;; URL: https://github.com/mori-dev/emacs-dayone
 ;; Version: 0.1
 ;; Package-Requires: ((uuid "0.0.3") (mustache "1.2"))
