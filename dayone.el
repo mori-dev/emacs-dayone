@@ -50,12 +50,13 @@
   (buffer-string)))
 
 (defun dayone-set-xml (uuid)
-  (let ((context (ht ("date" (dayone-date))
+  (let ((mustache-partial-paths (list "./"))
+        (context (ht ("date" (dayone-date))
                      ("uuid" uuid)
                      ("note" (dayone-note))
                      ("timezone" dayone-timezone)
                      ("os" dayone-os))))
-    (setq dayone-file-contents (mustache-render dayone-xml context))))
+    (setq dayone-file-contents (mustache-render "{{> layout.xml}}" context))))
 
 (defun dayone-write-file (uuid)
   (with-temp-buffer
@@ -68,36 +69,6 @@
   (let ((uuid (dayone-uuid)))
     (dayone-set-xml uuid)
     (dayone-write-file uuid)))
-
-(setq dayone-xml "<?xml version='1.0' encoding='UTF-8'?>
-<!DOCTYPE plist PUBLIC '-//Apple//DTD PLIST 1.0//EN' 'http://www.apple.com/DTDs/PropertyList-1.0.dtd'>
-<plist version='1.0'>
-<dict>
-         <key>Creation Date</key>
-         <date>{{ date }}</date>
-         <key>Creator</key>
-         <dict>
-                <key>Device Agent</key>
-                <string>Emacs</string>
-                <key>Generation Date</key>
-                <date>{{ date }}</date>
-                <key>Host Name</key>
-                <string>Emacs</string>
-                <key>OS Agent</key>
-                <string>{{ os }}</string>
-                <key>Software Agent</key>
-                <string>{{ software-agent }}</string>
-        </dict>
-        <key>Entry Text</key>
-        <string>{{ note }}</string>
-        <key>Starred</key>
-        <false/>
-        <key>Time Zone</key>
-        <string>{{ timezone }}</string>
-        <key>UUID</key>
-        <string>{{ uuid }}</string>
-</dict>
-</plist>")
 
 (provide 'dayone)
 
