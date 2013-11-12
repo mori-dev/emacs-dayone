@@ -62,6 +62,7 @@
 It seems that the default value works well enough.")
 
 (defvar dayone-file-contents "")
+(defvar dayone-default-tag-name "from-emacs")
 
 (defun dayone-date ()
   (format-time-string "%Y-%m-%dT%H:%M:%SZ" (current-time)))
@@ -84,13 +85,19 @@ It seems that the default value works well enough.")
                      ("uuid" uuid)
                      ("note" (dayone-note))
                      ("timezone" dayone-timezone)
-                     ("os" dayone-os))))
+                     ("os" dayone-os)
+                     ("tag-values" (tag-values-xml)))))
     (setq dayone-file-contents (mustache-render "{{> layout.xml}}" context))))
 
 (defun dayone-write-file (uuid)
   (with-temp-buffer
     (insert dayone-file-contents)
     (write-file (dayone-filename uuid))))
+
+(defun tag-values-xml ()
+  (let ((mustache-partial-paths (list "./"))
+        (context (ht ("tag" dayone-default-tag-name))))
+    (mustache-render "{{> tag.xml}}" context)))
 
 ;;;###autoload
 (defun dayone-add-note ()
