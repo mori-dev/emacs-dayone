@@ -73,9 +73,10 @@ It seems that the default value works well enough.")
   (concat dayone-dir uuid ".doentry"))
 
 (defun dayone-note ()
-  (if (region-active-p)
+  (if (use-region-p)
     (buffer-substring-no-properties (region-beginning) (region-end))
-  (buffer-string)))
+  (buffer-substring-no-properties (point-min) (point-max))))
+
 
 (defun dayone-set-xml (uuid)
   (let ((mustache-partial-paths (list "./"))
