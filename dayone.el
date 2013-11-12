@@ -41,9 +41,6 @@
 (defun dayone-uuid ()
   (uuid-to-stringy (uuid-create)))
 
-(defun dayone-note ()
-  (dayone-set-region))
-
 (defun dayone-filename (uuid)
   (concat dayone-dir uuid ".doentry"))
 
