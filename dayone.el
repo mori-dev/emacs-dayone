@@ -6,7 +6,7 @@
 ;; Keywords: Day One, tools, convenience
 ;; URL: https://github.com/mori-dev/emacs-dayone
 ;; Version: 0.1
-;; Package-Requires: ((uuid "0.0.3") (mustache "1.2"))
+;; Package-Requires: ((uuid "0.0.3") (mustache "0.22"))
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
