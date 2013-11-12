@@ -31,6 +31,10 @@
 
 (defvar dayone-dir (concat (getenv "HOME") "/Dropbox/アプリ/Day One/Journal.dayone/entries/"))
 
+(defvar dayone-timezone "Asia/Tokyo")
+(defvar software-agent "Day One (iOS)/1.11.4")
+(defvar dayone-os "Ubuntu")
+
 (defun dayone-date ()
   (format-time-string "%Y-%m-%dT%H:%M:%SZ" (current-time)))
 
@@ -51,7 +55,9 @@
 (defun dayone-set-xml (uuid)
   (let ((context (ht ("date" (dayone-date))
                      ("uuid" uuid)
-                     ("note" (dayone-note)))))
+                     ("note" (dayone-note))
+                     ("timezone" dayone-timezone)
+                     ("os" dayone-os))))
     (setq dayone-file-contents (mustache-render dayone-xml context))))
 
 (defun dayone-write-file (uuid)
@@ -75,22 +81,22 @@
          <key>Creator</key>
          <dict>
                 <key>Device Agent</key>
-                <string>Emacs24</string>
+                <string>Emacs</string>
                 <key>Generation Date</key>
                 <date>{{ date }}</date>
                 <key>Host Name</key>
                 <string>Emacs</string>
                 <key>OS Agent</key>
-                <string>Ubuntu</string>
+                <string>{{ os }}</string>
                 <key>Software Agent</key>
-                <string>Day One (iOS)/1.11.4</string>
+                <string>{{ software-agent }}</string>
         </dict>
         <key>Entry Text</key>
         <string>{{ note }}</string>
         <key>Starred</key>
         <false/>
         <key>Time Zone</key>
-        <string>Asia/Tokyo</string>
+        <string>{{ timezone }}</string>
         <key>UUID</key>
         <string>{{ uuid }}</string>
 </dict>
