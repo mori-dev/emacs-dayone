@@ -28,8 +28,11 @@
 ;; region when the concerned region is selected and M-x dayone-add-note.
 ;; When the region is not selected and M-x dayone-add-note is executed,
 ;; the all contents in the buffer are posted.
-;; As for dayone-add-note(), it may be convenient if you assign it to
-;; an appropriate key or add alias.
+;; M-x dayone-add-note-with-tag shall be posted by attaching the tag.
+;; When multiple tags are attached, use the space key for separating
+;; each tag.
+;; As for dayone-add-note() and dayone-add-note-with-tag,, it may be
+;; convenient if you assign it to an appropriate key or add alias.
 ;; For the Day One, the data is managed by either the iCloud or the
 ;; Dropbox. This emacs extension is supported for storing data of
 ;; Dropbox only.
@@ -63,6 +66,8 @@ It seems that the default value works well enough.")
 
 (defvar dayone-file-contents "")
 (defvar dayone-default-tag-name "from-emacs")
+(defvar dayone-tag-name-list `(,dayone-default-tag-name))
+(defvar dayone-template-directory (file-name-directory load-file-name))
 
 (defun dayone-date ()
   (format-time-string "%Y-%m-%dT%H:%M:%SZ" (current-time)))
@@ -80,7 +85,7 @@ It seems that the default value works well enough.")
 
 
 (defun dayone-set-xml (uuid)
-  (let ((mustache-partial-paths (list "./"))
+  (let ((mustache-partial-paths (list dayone-template-directory))
         (context (ht ("date" (dayone-date))
                      ("uuid" uuid)
                      ("note" (dayone-note))
@@ -95,9 +100,13 @@ It seems that the default value works well enough.")
     (write-file (dayone-filename uuid))))
 
 (defun tag-values-xml ()
-  (let ((mustache-partial-paths (list "./"))
-        (context (ht ("tag" dayone-default-tag-name))))
-    (mustache-render "{{> tag.xml}}" context)))
+  (let ((tag-xml ""))
+    (when dayone-tag-name-list
+      (dolist (tag dayone-tag-name-list)
+        (let ((mustache-partial-paths (list dayone-template-directory))
+              (context (ht ("tag" tag))))
+          (setq tag-xml (concat tag-xml (mustache-render "{{> tag.xml}}" context) "\n")))))
+    tag-xml))
 
 ;;;###autoload
 (defun dayone-add-note ()
@@ -106,6 +115,13 @@ It seems that the default value works well enough.")
   (let ((uuid (dayone-uuid)))
     (dayone-set-xml uuid)
     (dayone-write-file uuid)))
+
+;;;###autoload
+(defun dayone-add-note-with-tag (tags)
+  "It creates the new Day One note with tag."
+  (interactive "sTags: \n")
+  (setq dayone-tag-name-list (split-string tags " "))
+  (dayone-add-note))
 
 (provide 'dayone)
 
