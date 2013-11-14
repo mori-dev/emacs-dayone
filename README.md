@@ -22,6 +22,11 @@ For the Day One, the data is managed by either the iCloud or the Dropbox.  This 
 
 * mori-dev
 
+
+## Donate
+
+* [mori-dev's Amazon Wish List](http://www.amazon.co.jp/registry/wishlist/3U1LOHTPSDG9V)
+
 ## License
 
 GPLv3
