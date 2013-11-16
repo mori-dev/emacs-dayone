@@ -12,10 +12,16 @@ dayone.el is a simple emacs extension for placing the new post from the Emacs to
 MAs for dayone-add-note and dayone-add-note-with-tag, it may be convenient if you assign it to an appropriate key or add alias.
 For the Day One, the data is managed by either the iCloud or the Dropbox.  This emacs extension is supported for storing data of Dropbox only.
 
+## Install
+
+```
+(package-install 'dayone)
+```
+
 ## Setting
 
 ```
-(require 'dayone)
+;; (require 'dayone)
 (setq dayone-dir (concat (getenv "HOME") "/Dropbox/APP/Day One/Journal.dayone/entries/"))
 (setq dayone-timezone "America/Sao_Paulo")
 ```
