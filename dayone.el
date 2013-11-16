@@ -73,7 +73,7 @@ It seems that the default value works well enough.")
   (format-time-string "%Y-%m-%dT%H:%M:%SZ" (current-time)))
 
 (defun dayone-uuid ()
-  (uuid-to-stringy (uuid-create)))
+  (uuid-string))
 
 (defun dayone-filename (uuid)
   (concat dayone-dir uuid ".doentry"))
