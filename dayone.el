@@ -83,8 +83,7 @@ It seems that the default value works well enough.")
     (buffer-substring-no-properties (region-beginning) (region-end))
   (buffer-substring-no-properties (point-min) (point-max))))
 
-
-(defun dayone-set-xml (uuid)
+(defun dayone-render-xml (uuid)
   (let ((mustache-partial-paths (list dayone-template-directory))
         (context (ht ("date" (dayone-date))
                      ("uuid" uuid)
@@ -92,11 +91,11 @@ It seems that the default value works well enough.")
                      ("timezone" dayone-timezone)
                      ("os" dayone-os)
                      ("tag-values" (tag-values-xml)))))
-    (setq dayone-file-contents (mustache-render "{{> layout.xml}}" context))))
+    (mustache-render "{{> layout.xml}}" context)))
 
-(defun dayone-write-file (uuid)
+(defun dayone-write-file (uuid xml)
   (with-temp-buffer
-    (insert dayone-file-contents)
+    (insert xml)
     (write-file (dayone-filename uuid))))
 
 (defun tag-values-xml ()
@@ -112,9 +111,9 @@ It seems that the default value works well enough.")
 (defun dayone-add-note ()
   "It creates the new Day One note."
   (interactive)
-  (let ((uuid (dayone-uuid)))
-    (dayone-set-xml uuid)
-    (dayone-write-file uuid)))
+  (let* ((uuid (dayone-uuid))
+         (xml (dayone-render-xml uuid)))
+    (dayone-write-file uuid xml)))
 
 ;;;###autoload
 (defun dayone-add-note-with-tag (tags)
