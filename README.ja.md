@@ -18,7 +18,6 @@ Day One では、データを iCloud か Dropbox かのどちらかで管理し�
 ## 設定
 
 ```
-;; (require 'dayone)
 ;; Day One のデータを配置している directory への path を格納します。必ずあなたの設定ファイルで設定して下さい。
 (setq dayone-dir (concat (getenv "HOME") "/Dropbox/APP/Day One/Journal.dayone/entries/"))
 ;; Day One のノートの XML で指定するタイムゾーンの値を格納します。
