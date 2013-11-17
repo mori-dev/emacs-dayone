@@ -49,20 +49,37 @@
 (require 'mustache)
 (require 'ht)
 
-(defvar dayone-dir ""
+(defgroup dayone nil
+  "Day One"
+  :group 'applications)
+
+(defcustom dayone-dir
+  ""
   "It stores the path indicating the directory allocating the data of the
- Day One. It should be set up by your setting file.")
+ Day One. It should be set up by your setting file."
+  :type 'directory
+  :group 'dayone)
 
-(defvar dayone-timezone "Asia/Tokyo"
-  "It stores the time zone value designated by the XML of the Day One note.")
+(defcustom dayone-timezone
+  "Asia/Tokyo"
+  "It stores the path indicating the directory allocating the data of the
+ Day One. It should be set up by your setting file."
+  :type 'timezone
+  :group 'dayone)
 
-(defvar software-agent "Day One (iOS)/1.11.4"
+(defcustom dayone-software-agent
+  "Day One (iOS)/1.11.4"
   "It stores the Software Agent value designated by the XML of the Day One
- note. It seems that the default value works well enough.")
+ note. It seems that the default value works well enough."
+  :type 'software-agent
+  :group 'dayone)
 
-(defvar dayone-os "Ubuntu"
+(defcustom dayone-os
+  "Ubuntu"
   "It stores the OS Agent value designated by the XML of the Day One note.
-It seems that the default value works well enough.")
+It seems that the default value works well enough."
+  :type 'os
+  :group 'dayone)
 
 (defvar dayone-file-contents "")
 (defvar dayone-default-tag-name "from-emacs")
@@ -90,6 +107,7 @@ It seems that the default value works well enough.")
                      ("note" (dayone-note))
                      ("timezone" dayone-timezone)
                      ("os" dayone-os)
+                     ("software-agent" dayone-software-agent)
                      ("tag-values" (tag-values-xml)))))
     (mustache-render "{{> layout.xml}}" context)))
 
