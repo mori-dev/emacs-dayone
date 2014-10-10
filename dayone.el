@@ -48,6 +48,9 @@
 (require 'uuid)
 (require 'mustache)
 (require 'ht)
+(require 'calc)
+(require 'calc-ext)
+
 
 (defgroup dayone nil
   "Day One"
@@ -89,6 +92,15 @@ It seems that the default value works well enough."
 (defun dayone-date ()
   (format-time-string "%Y-%m-%dT%H:%M:%SZ" (current-time)))
 
+(defun dayone-gmt-date ()
+  (format-time-string "%Y-%m-%dT%H:%M:%SZ" (seconds-to-time 
+										   (+ (string-to-number (let ((nowtime (current-time)))
+																  (let ((high (car   nowtime))
+																		(low  (cadr  nowtime))
+																		(mili (caddr nowtime)))
+																	(math-format-number
+																	 (math-add (math-mul high (math-pow 2 16)) low))))) (* (first (current-time-zone )) -1)))))
+
 (defun dayone-uuid ()
   (uuid-string))
 
@@ -103,6 +115,7 @@ It seems that the default value works well enough."
 (defun dayone-render-xml (uuid)
   (let ((mustache-partial-paths (list dayone-template-directory))
         (context (ht ("date" (dayone-date))
+					 ("date-gmt" (dayone-gmt-date))
                      ("uuid" uuid)
                      ("note" (dayone-note))
                      ("timezone" dayone-timezone)
