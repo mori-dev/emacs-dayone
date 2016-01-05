@@ -86,8 +86,8 @@ It seems that the default value works well enough."
 (defvar dayone-tag-name-list `(,dayone-default-tag-name))
 (defvar dayone-template-directory (file-name-directory load-file-name))
 
-(defun dayone-date ()
-  (format-time-string "%Y-%m-%dT%H:%M:%SZ" (current-time)))
+(defun dayone-gmt-date ()
+  (format-time-string "%Y-%m-%dT%H:%M:%SZ" (current-time) t))
 
 (defun dayone-uuid ()
   (uuid-string))
@@ -102,7 +102,7 @@ It seems that the default value works well enough."
 
 (defun dayone-render-xml (uuid)
   (let ((mustache-partial-paths (list dayone-template-directory))
-        (context (ht ("date" (dayone-date))
+        (context (ht ("date" (dayone-gmt-date))
                      ("uuid" uuid)
                      ("note" (dayone-note))
                      ("timezone" dayone-timezone)
